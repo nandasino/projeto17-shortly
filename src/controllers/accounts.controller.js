@@ -26,7 +26,7 @@ export async function signIn(req, res){
 
         const userExists = await db.query("SELECT * FROM  users WHERE email = $1", [email]);
         const user = userExists.rows[0];
-        const token = jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET);
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_KEY);
         console.log(token);
         await db.query('INSERT INTO sesions ("userId", token) VALUES ($1, $2);', [user.id, token]);
 
