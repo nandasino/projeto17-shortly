@@ -30,10 +30,11 @@ export async function signIn(req, res){
         const token = jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET);
         console.log(token);
         console.log(user.id);
-
         await db.query('INSERT INTO sesions ("userId", token) VALUES ($1, $2);', [user.id, token]);
+
         res.sendStatus(200);
     }catch(error){
         res.sendStatus(500);
+        console.log(error);
     }
 }
