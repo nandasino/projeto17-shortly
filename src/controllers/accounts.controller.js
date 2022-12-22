@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import { db } from "../database/db.js"
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export async function signUp(req,res){
     const {name,email,password} = res.locals.signUp;
@@ -25,7 +27,7 @@ export async function signIn(req, res){
         const userExists = await db.query("SELECT * FROM  users WHERE email = $1", [email]);
         const user = userExists.rows[0];
 
-        const token = jwt.sign({ user: user.id }, process.env.TOKEN_SECRET);
+        const token = jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET);
 
         await db.query('INSERT INTO sesions ("userId", token) VALUES ($1, $2);', [user.id, token]);
         res.sendStatus(200);
