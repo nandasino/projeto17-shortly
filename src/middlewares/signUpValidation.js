@@ -1,4 +1,4 @@
-import { signUpSchema } from "../models/signUp.model";
+import { signUpSchema } from "../models/signUp.model.js";
 import {db} from "../database/db.js";
 
 export async function signUpValidation(req, res, next){

@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { db } from "../database/db.js"
+import jwt from "jsonwebtoken";
 
 export async function signUp(req,res){
     const {name,email,password} = res.locals.signUp;
@@ -15,3 +16,4 @@ export async function signUp(req,res){
         res.sendStatus(500);
     }
 }
+
