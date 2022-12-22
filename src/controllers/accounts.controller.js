@@ -18,12 +18,16 @@ export async function signUp(req,res){
 }
 
 export async function signIn(req, res){
-    const { userId } = res.locals.signIn;
-
-    const token = jwt.sign({userId}, process.env.TOKEN_SECRET);
+    const { email } = req.body;
 
     try{
-        await db.query('INSERT INTO sesions (token, "userId") VALUES ($1, $2);', [token, userId]);
+
+        const userExists = await db.query("SELECT * FROM  users WHERE email = $1", [email]);
+        const user = userExists.rows[0];
+
+        const token = jwt.sign({ user: user.id }, process.env.TOKEN_SECRET);
+
+        await db.query('INSERT INTO sesions ("userId", token) VALUES ($1, $2);', [user.id, token]);
         res.sendStatus(200);
     }catch(error){
         res.sendStatus(500);

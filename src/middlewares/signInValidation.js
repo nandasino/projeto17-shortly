@@ -12,13 +12,11 @@ export async function signInValidation(req, res, next){
 
     const user = emailExists.rows[0];
     const userPassword = user.password;
-
     const samePassword = bcrypt.compareSync(password, userPassword);
 
     if (!samePassword){
         return res.sendStatus(401);
     }
 
-    res.locals.signIn = {userId: user.id};
     next();
 }
