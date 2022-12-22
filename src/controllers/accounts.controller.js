@@ -23,9 +23,9 @@ export async function signIn(req, res){
     const token = jwt.sign({userId}, process.env.TOKEN_SECRET);
 
     try{
-        const session = await connection.query('INSERT INTO sessions (token, "userId") VALUES ($1, $2);', [token, userId]);
-        return res.status(200).send({ token });
-        
+        const session = await connection.query('INSERT INTO sesions (token, "userId") VALUES ($1, $2);', [token, userId]);
+        res.status(200).send({ token });
+
     }catch(error){
         res.sendStatus(422);
     }
