@@ -23,10 +23,8 @@ export async function signIn(req, res){
     const token = jwt.sign({userId}, process.env.TOKEN_SECRET);
 
     try{
-        await connection.query('INSERT INTO sesions (token, "userId") VALUES ($1, $2);', [token, userId]);
-        res.sendStatus(201);
-        console.log({token});
-
+        await db.query('INSERT INTO sesions (token, "userId") VALUES ($1, $2);', [token, userId]);
+        res.status(200).send({ token });
     }catch(error){
         res.sendStatus(422);
     }
