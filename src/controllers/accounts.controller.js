@@ -28,10 +28,9 @@ export async function signIn(req, res){
         const user = userExists.rows[0];
         const secretKey = process.env.JWT_SECRET;
         const token = jwt.sign({ userId: user.id }, secretKey);
-        console.log(token);
         await db.query('INSERT INTO sesions ("userId", token) VALUES ($1, $2);', [user.id, token]);
 
-        res.sendStatus(200);
+        res.status(200).send({ token });
     }catch(error){
         res.sendStatus(500);
         console.log(error);
