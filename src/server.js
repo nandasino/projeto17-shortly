@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import accountsRoute from "./routers/accounts.router.js"
 import urlsRoute from "./routers/urls.router.js"
+import usersRoute from "./routers/userRanking.router.js"
 
 
 dotenv.config()
@@ -13,6 +14,7 @@ app.use(json());
 app.use(cors());
 app.use(accountsRoute);
 app.use(urlsRoute);
+app.use(usersRoute);
 
 const port = process.env.PORT
 
