@@ -1,4 +1,4 @@
-import { db } from "../db/db.js";
+import { db } from "../database/db.js";
 import { nanoid } from "nanoid";
 
 export async function shorten(req,res){
