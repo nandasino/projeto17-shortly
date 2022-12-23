@@ -31,3 +31,22 @@ export async function getUsersMe(req,res){
         res.sendStatus(500);
     }
 }
+
+export async function getRanking(req,res){
+    try{
+        const list = await db.query(`
+            SELECT users.id, users.name, COUNT(links.id) AS "linksCount",
+            COUNT(visits.id) AS "visitCount"
+            FROM users
+            LEFT JOIN links ON users.id = links."userId"
+            LEFT JOIN visits ON links.id = visits."urlId"
+            GROUP BY users.id, users.name
+            ORDER BY 
+            "visitCount" DESC, 
+            "linksCount" DESC  LIMIT 10;`
+        );
+        res.status(200).send(list.rows);
+    }catch(error){
+        res.sendStatus(500);
+    }
+}
