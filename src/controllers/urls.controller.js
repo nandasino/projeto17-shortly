@@ -32,3 +32,22 @@ export async function getUrl(req, res){
         res.sendStatus(500);
     }
 }
+
+export async function getOPenUrl(req, res){
+    const { shortUrl } = req.params;
+    try{
+        const shortenExist = await db.query('SELECT * FROM links WHERE "shortUrl" = $1;', [shortUrl]);
+        if(shortenExist.rowCount==0){
+            return res.sendStatus(404);
+        }
+        const urlId = shortenExist.rows[0].id;
+        const url = shortenExist.rows[0].url;
+
+        await db.query('INSERT INTO visits ("urlId") VALUES ($1);', [urlId]);
+        
+        res.redirect(url);
+
+    }catch(error){
+        res.sendStatus(500);
+    }
+}
