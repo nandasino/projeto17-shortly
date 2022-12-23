@@ -15,7 +15,7 @@ export async function authValidation(req, res, next){
         const data = jwt.verify(token, secretKey);
         const dataId = data.userId;
         const user = (await db.query('SELECT * FROM users WHERE id = $1;', [dataId])).rows[0];
-        res.locals.idUser = data.userId;
+        res.locals.idUser = dataId;
         res.locals.user = user;
         next();
 
