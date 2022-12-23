@@ -51,3 +51,27 @@ export async function getOPenUrl(req, res){
         res.sendStatus(500);
     }
 }
+
+export async function deleteUrl(req,res){
+    const { id } = req.params;
+    const userId = res.locals.idUser;
+
+    try{
+        const urlExist = await db.query('SELECT * FROM links WHERE id = $1;', [id]);
+
+        if(urlExist.rowCount == 0){
+            return res.sendStatus(404);
+        }
+    
+        const userUrl = urlExist.rows[0].userId;
+
+        if(userId !== userUrl){
+            return res.sendStatus(401);
+        }
+        await db.query('DELETE FROM links WHERE id = $1;', [id]);
+        await db.query('DELETE FROM visits WHERE "urlId" = $1;', [id]);
+        res.sendStatus(204);
+    }catch(error){
+        res.sendStatus(500);
+    }
+}
